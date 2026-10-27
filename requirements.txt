@@ -1,0 +1,9 @@
+streamlit
+beautifulsoup4
+requests
+lxml
+markdownify
+openpyxl
+pandas
+reportlab
+Pillow
