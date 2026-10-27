@@ -80,9 +80,41 @@ footer {visibility: hidden;}
     background: #ffffff;
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 18px;
-    padding: 28px 32px;
+    padding: 2px 32px 28px;
     margin: 20px 0;
     box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+/* Kill Streamlit's default top gap inside cards */
+.card ~ div > [data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] > .card {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove top padding/margin Streamlit injects before the first element in a block */
+.card + div,
+.card + div > div:first-child,
+[data-testid="stVerticalBlock"] > div:has(> [data-testid="stMarkdownContainer"] > .card) + div > div:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Target the block element Streamlit wraps around elements following a custom HTML div */
+div[data-testid="stVerticalBlock"] > div[data-testid="element-container"]:has([data-testid="stMarkdownContainer"] .card) ~ div[data-testid="element-container"]:first-of-type {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Directly remove the extra gap Streamlit adds at the top of block containers */
+.block-container {
+    padding-top: 1rem !important;
+}
+
+/* Remove gap between card open div and the first step-label inside it */
+[data-testid="stMarkdownContainer"]:has(.card) + div > div:first-child > [data-testid="stMarkdownContainer"] {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 /* ── Input label override ── */

@@ -17,20 +17,15 @@ import io
 import requests
 
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import inch, cm
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.lib import colors
-from reportlab.platypus import (
-    BaseDocTemplate, PageTemplate, Frame,
-    Paragraph, Spacer, PageBreak, Image,
-    TableOfContents, KeepTogether, HRFlowable
-)
-from reportlab.platypus.doctemplate import NextPageTemplate
 from reportlab.lib.colors import HexColor, black, white
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import (
+    Paragraph, Spacer, PageBreak, Image,
+    SimpleDocTemplate, KeepTogether
+)
 from reportlab.platypus.flowables import Flowable
 
 
@@ -68,32 +63,34 @@ class HorizontalRule(Flowable):
 
 
 class CoverPage(Flowable):
-    """Full-page cover image flowable."""
-    def __init__(self, img_data, page_width, page_height):
+    """Full-page cover image flowable — bleeds to page edges."""
+    def __init__(self, img_data, frame_width, frame_height):
         Flowable.__init__(self)
         self.img_data = img_data
-        self.page_width = page_width
-        self.page_height = page_height
-        self.width = page_width
-        self.height = page_height
+        # Store the FULL page dimensions for drawing
+        self.full_page_width = frame_width + 2 * MARGIN
+        self.full_page_height = frame_height + 2 * MARGIN
+        # Report only the frame-available size so ReportLab doesn't complain
+        self.width = frame_width
+        self.height = frame_height
 
     def draw(self):
         c = self.canv
         c.saveState()
-        # Black background
+        # Black background — bleed past the margins in all directions
         c.setFillColor(black)
-        c.rect(-MARGIN, -MARGIN, self.page_width + 2 * MARGIN,
-               self.page_height + 2 * MARGIN, fill=1, stroke=0)
+        c.rect(-MARGIN, -MARGIN, self.full_page_width, self.full_page_height,
+               fill=1, stroke=0)
 
-        # Draw the image centered, scaled to fill the page
+        # Draw the image centered and scaled to fill the full page
         from reportlab.lib.utils import ImageReader
         reader = ImageReader(io.BytesIO(self.img_data))
         img_w, img_h = reader.getSize()
-        scale = max(self.page_width / img_w, self.page_height / img_h)
+        scale = max(self.full_page_width / img_w, self.full_page_height / img_h)
         drawn_w = img_w * scale
         drawn_h = img_h * scale
-        x = (self.page_width - drawn_w) / 2 - MARGIN
-        y = (self.page_height - drawn_h) / 2 - MARGIN
+        x = -MARGIN + (self.full_page_width - drawn_w) / 2
+        y = -MARGIN + (self.full_page_height - drawn_h) / 2
         c.drawImage(reader, x, y, drawn_w, drawn_h, preserveAspectRatio=True)
         c.restoreState()
 
