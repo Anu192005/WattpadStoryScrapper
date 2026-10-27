@@ -38,9 +38,9 @@ GUTTER = 0.9 * inch           # Slightly smaller inner margin
 BODY_FONT       = "Times-Roman"
 BODY_FONT_BOLD  = "Times-Bold"
 BODY_FONT_ITALIC= "Times-Italic"
-BODY_SIZE       = 12           # pt  — comfortable reading size
-LINE_LEADING    = 18           # pt  — 1.5× leading for easy reading
-INDENT          = 22           # pt  — first-line indent (~1.5em)
+BODY_SIZE       = 14           # pt  — comfortable reading size
+LINE_LEADING    = 22           # pt  — 1.5× leading for easy reading
+INDENT          = 26           # pt  — first-line indent (~1.5em)
 
 ACCENT = HexColor("#FF6B35")   # Wattpad-inspired warm orange
 
