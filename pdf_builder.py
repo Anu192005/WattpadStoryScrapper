@@ -62,37 +62,29 @@ class HorizontalRule(Flowable):
         self.canv.line(0, self.thickness / 2, self.width, self.thickness / 2)
 
 
-class CoverPage(Flowable):
-    """Full-page cover image flowable — bleeds to page edges."""
-    def __init__(self, img_data, frame_width, frame_height):
-        Flowable.__init__(self)
-        self.img_data = img_data
-        # Store the FULL page dimensions for drawing
-        self.full_page_width = frame_width + 2 * MARGIN
-        self.full_page_height = frame_height + 2 * MARGIN
-        # Report only the frame-available size so ReportLab doesn't complain
-        self.width = frame_width
-        self.height = frame_height
-
-    def draw(self):
-        c = self.canv
-        c.saveState()
-        # Black background — bleed past the margins in all directions
-        c.setFillColor(black)
-        c.rect(-MARGIN, -MARGIN, self.full_page_width, self.full_page_height,
-               fill=1, stroke=0)
-
-        # Draw the image centered and scaled to fill the full page
+def _draw_cover_on_canvas(canvas, cover_bytes):
+    """Draw the cover image directly onto the canvas page (absolute A4 coords)."""
+    pw, ph = A4
+    canvas.saveState()
+    # Black bleed background
+    canvas.setFillColor(black)
+    canvas.rect(0, 0, pw, ph, fill=1, stroke=0)
+    if cover_bytes:
         from reportlab.lib.utils import ImageReader
-        reader = ImageReader(io.BytesIO(self.img_data))
+        reader = ImageReader(io.BytesIO(cover_bytes))
         img_w, img_h = reader.getSize()
-        scale = max(self.full_page_width / img_w, self.full_page_height / img_h)
+        scale = max(pw / img_w, ph / img_h)
         drawn_w = img_w * scale
         drawn_h = img_h * scale
-        x = -MARGIN + (self.full_page_width - drawn_w) / 2
-        y = -MARGIN + (self.full_page_height - drawn_h) / 2
-        c.drawImage(reader, x, y, drawn_w, drawn_h, preserveAspectRatio=True)
-        c.restoreState()
+        x = (pw - drawn_w) / 2
+        y = (ph - drawn_h) / 2
+        canvas.drawImage(reader, x, y, drawn_w, drawn_h, preserveAspectRatio=True)
+    else:
+        # Text fallback on dark background
+        canvas.setFillColor(white)
+        canvas.setFont(BODY_FONT_BOLD, 28)
+        canvas.drawCentredString(pw / 2, ph / 2 + 20, "Wattpad Story")
+    canvas.restoreState()
 
 
 # ── Style Sheet ───────────────────────────────────────────────────────────────
@@ -338,19 +330,11 @@ class PDFBuilder:
 
     # ── Story Sections ────────────────────────────────────────────────────────
 
-    def _build_cover_section(self, cover_bytes):
-        """Return flowables for the cover page."""
-        story = []
-        if cover_bytes:
-            story.append(CoverPage(cover_bytes, PAGE_WIDTH - 2 * MARGIN, PAGE_HEIGHT - 2 * MARGIN))
-        else:
-            # Fallback text-only cover
-            story.append(Spacer(1, 2 * inch))
-            story.append(Paragraph(self._escape(self.metadata['title']), self.styles['cover_title']))
-            story.append(Spacer(1, 0.3 * inch))
-            story.append(Paragraph(f"by {self._escape(self.metadata['author'])}", self.styles['cover_author']))
-        story.append(PageBreak())
-        return story
+    def _build_cover_section(self):
+        """Return flowables for the cover page (just a PageBreak — cover drawn via canvas callback)."""
+        # The cover image is drawn directly in the onFirstPage canvas callback,
+        # so all we need here is a PageBreak to advance past page 1.
+        return [PageBreak()]
 
     def _build_title_page(self):
         """Return flowables for the title/info page."""
@@ -447,12 +431,17 @@ class PDFBuilder:
         doc._story_title = self.metadata.get('title', '')
         doc._story_author = self.metadata.get('author', '')
 
+        # Build onFirstPage callback: draws cover image directly on canvas then runs header/footer
+        def _first_page(canvas, doc):
+            _draw_cover_on_canvas(canvas, cover_bytes)
+            _header_footer(canvas, doc)
+
         # Assemble all flowables
         flowables = []
-        flowables += self._build_cover_section(cover_bytes)
+        flowables += self._build_cover_section()   # just a PageBreak
         flowables += self._build_title_page()
         flowables += self._build_toc()
         flowables += self._build_chapters()
 
-        doc.build(flowables, onFirstPage=_header_footer, onLaterPages=_header_footer)
+        doc.build(flowables, onFirstPage=_first_page, onLaterPages=_header_footer)
         print(f"  ✅  PDF saved to: {output_path}")

@@ -85,36 +85,15 @@ footer {visibility: hidden;}
     box-shadow: 0 2px 20px rgba(0,0,0,0.06);
 }
 
-/* Kill Streamlit's default top gap inside cards */
-.card ~ div > [data-testid="stMarkdownContainer"],
-[data-testid="stMarkdownContainer"] > .card {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-/* Remove top padding/margin Streamlit injects before the first element in a block */
-.card + div,
-.card + div > div:first-child,
-[data-testid="stVerticalBlock"] > div:has(> [data-testid="stMarkdownContainer"] > .card) + div > div:first-child {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-/* Target the block element Streamlit wraps around elements following a custom HTML div */
-div[data-testid="stVerticalBlock"] > div[data-testid="element-container"]:has([data-testid="stMarkdownContainer"] .card) ~ div[data-testid="element-container"]:first-of-type {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+/* ── Remove Streamlit flexbox gap inside card ── */
+/* Streamlit stacks elements with a flex gap — zero it out selectively */
+[data-testid="stVerticalBlock"] > [data-testid="element-container"]:has(.card-inner-step) {
+    margin-top: -1rem !important;
 }
 
 /* Directly remove the extra gap Streamlit adds at the top of block containers */
 .block-container {
     padding-top: 1rem !important;
-}
-
-/* Remove gap between card open div and the first step-label inside it */
-[data-testid="stMarkdownContainer"]:has(.card) + div > div:first-child > [data-testid="stMarkdownContainer"] {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
 }
 
 /* ── Input label override ── */
@@ -368,8 +347,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Input Card ────────────────────────────────────────────────────────────────
-st.markdown('<div class="card">', unsafe_allow_html=True)
-st.markdown('<div class="step-label">Step 1 — Story URL</div>', unsafe_allow_html=True)
+st.markdown('<div class="card"><div class="step-label card-inner-step">Step 1 — Story URL</div>', unsafe_allow_html=True)
 
 story_url = st.text_input(
     label="Wattpad Story URL",
@@ -377,8 +355,7 @@ story_url = st.text_input(
     label_visibility="collapsed"
 )
 
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-st.markdown('<div class="step-label">Step 2 — Download Format</div>', unsafe_allow_html=True)
+st.markdown('<div class="divider"></div><div class="step-label">Step 2 — Download Format</div>', unsafe_allow_html=True)
 
 col_fmt1, col_fmt2 = st.columns(2)
 with col_fmt1:
@@ -388,8 +365,7 @@ with col_fmt1:
         label_visibility="collapsed"
     )
 
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-st.markdown('<div class="step-label">⚙️ Advanced Settings</div>', unsafe_allow_html=True)
+st.markdown('<div class="divider"></div><div class="step-label">⚙️ Advanced Settings</div>', unsafe_allow_html=True)
 
 adv_col1, adv_col2 = st.columns(2)
 with adv_col1:
