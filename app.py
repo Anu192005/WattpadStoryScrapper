@@ -334,7 +334,13 @@ def _build_epub_bytes(metadata, chapters):
 
 def sanitize_slug(title):
     import re
-    return re.sub(r'[\W_]+', '_', title.lower()).strip('_')
+    # Remove characters illegal in Windows filenames: <>:"/\\|?*
+    cleaned = re.sub(r'[<>:"/\\|?*]', '', title)
+    # Strip leading/trailing whitespace and periods
+    cleaned = cleaned.strip().strip('.')
+    # Remove any control characters
+    cleaned = re.sub(r'[\x00-\x1f]', '', cleaned)
+    return cleaned
 
 
 # ── Hero ──────────────────────────────────────────────────────────────────────
