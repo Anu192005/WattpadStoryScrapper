@@ -14,15 +14,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ── Premium CSS ───────────────────────────────────────────────────────────────
+# ── Premium Light CSS ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Outfit', sans-serif !important;
-    background-color: #0e0e0f;
-    color: #f0f0f0;
+    background-color: #f8f5f1;
+    color: #1a1a1a;
 }
 
 #MainMenu {visibility: hidden;}
@@ -32,9 +32,9 @@ footer {visibility: hidden;}
 
 /* ── Page background ── */
 .stApp {
-    background: radial-gradient(ellipse at 20% 10%, rgba(255,75,31,0.12) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 90%, rgba(255,144,104,0.08) 0%, transparent 60%),
-                #0e0e0f;
+    background: radial-gradient(ellipse at 15% 10%, rgba(255,107,53,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, rgba(255,180,120,0.10) 0%, transparent 55%),
+                #f8f5f1;
     min-height: 100vh;
 }
 
@@ -45,9 +45,9 @@ footer {visibility: hidden;}
 }
 .hero-badge {
     display: inline-block;
-    background: rgba(255,75,31,0.15);
-    border: 1px solid rgba(255,75,31,0.4);
-    color: #ff7a52;
+    background: rgba(255,107,53,0.12);
+    border: 1px solid rgba(255,107,53,0.35);
+    color: #e8521e;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 2px;
@@ -59,7 +59,7 @@ footer {visibility: hidden;}
 .hero-title {
     font-size: 3.2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #ff4b1f 0%, #ff9068 50%, #ffb347 100%);
+    background: linear-gradient(135deg, #d63c10 0%, #ff6b35 50%, #ff9a5c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -68,59 +68,68 @@ footer {visibility: hidden;}
 }
 .hero-sub {
     font-size: 1.05rem;
-    color: #888;
-    font-weight: 300;
-    max-width: 500px;
+    color: #7a6f68;
+    font-weight: 400;
+    max-width: 520px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 /* ── Card ── */
 .card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 18px;
     padding: 28px 32px;
     margin: 20px 0;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
 }
 
 /* ── Input label override ── */
 .stTextInput label, .stSelectbox label, .stSlider label {
-    color: #bbb !important;
+    color: #555 !important;
     font-size: 0.85rem !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.4px !important;
 }
 
 /* ── Text input ── */
 .stTextInput > div > div > input {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
+    background: #fafafa !important;
+    border: 1.5px solid #e0dbd5 !important;
     border-radius: 12px !important;
-    color: #f0f0f0 !important;
+    color: #1a1a1a !important;
     font-family: 'Outfit', sans-serif !important;
     font-size: 1rem !important;
     padding: 14px 16px !important;
-    transition: border 0.2s ease !important;
+    transition: border 0.2s ease, box-shadow 0.2s ease !important;
 }
 .stTextInput > div > div > input:focus {
-    border: 1px solid rgba(255,75,31,0.6) !important;
-    box-shadow: 0 0 0 3px rgba(255,75,31,0.1) !important;
+    border: 1.5px solid #ff6b35 !important;
+    box-shadow: 0 0 0 3px rgba(255,107,53,0.12) !important;
+    background: #fff !important;
+}
+.stTextInput > div > div > input::placeholder {
+    color: #bbb !important;
 }
 
 /* ── Selectbox ── */
 .stSelectbox > div > div {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
+    background: #fafafa !important;
+    border: 1.5px solid #e0dbd5 !important;
     border-radius: 12px !important;
-    color: #f0f0f0 !important;
+    color: #1a1a1a !important;
+}
+
+/* ── Slider ── */
+.stSlider > div > div > div > div {
+    background: linear-gradient(90deg, #ff6b35, #ff9a5c) !important;
 }
 
 /* ── Main CTA Button ── */
 .stButton > button {
     width: 100%;
-    background: linear-gradient(135deg, #ff4b1f 0%, #ff9068 100%);
+    background: linear-gradient(135deg, #d63c10 0%, #ff6b35 60%, #ff9a5c 100%);
     color: white !important;
     border: none !important;
     border-radius: 12px !important;
@@ -131,11 +140,11 @@ footer {visibility: hidden;}
     letter-spacing: 0.5px !important;
     cursor: pointer;
     transition: all 0.25s ease !important;
-    box-shadow: 0 4px 20px rgba(255,75,31,0.35) !important;
+    box-shadow: 0 4px 18px rgba(214,60,16,0.30) !important;
 }
 .stButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 30px rgba(255,75,31,0.5) !important;
+    box-shadow: 0 8px 28px rgba(214,60,16,0.40) !important;
 }
 .stButton > button:active {
     transform: translateY(0px) !important;
@@ -144,7 +153,7 @@ footer {visibility: hidden;}
 /* ── Download button ── */
 .stDownloadButton > button {
     width: 100% !important;
-    background: linear-gradient(135deg, #00b894 0%, #00cec9 100%) !important;
+    background: linear-gradient(135deg, #00a67e 0%, #00c9a7 100%) !important;
     color: white !important;
     border: none !important;
     border-radius: 12px !important;
@@ -152,34 +161,36 @@ footer {visibility: hidden;}
     font-size: 1.05rem !important;
     font-weight: 700 !important;
     font-family: 'Outfit', sans-serif !important;
-    box-shadow: 0 4px 20px rgba(0,184,148,0.35) !important;
+    box-shadow: 0 4px 18px rgba(0,166,126,0.28) !important;
     transition: all 0.25s ease !important;
+    margin-top: 8px !important;
 }
 .stDownloadButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 30px rgba(0,184,148,0.5) !important;
+    box-shadow: 0 8px 28px rgba(0,166,126,0.40) !important;
 }
 
 /* ── Progress bar ── */
 .stProgress > div > div {
-    background: linear-gradient(90deg, #ff4b1f, #ff9068) !important;
+    background: linear-gradient(90deg, #d63c10, #ff9a5c) !important;
     border-radius: 10px !important;
 }
 .stProgress > div {
-    background: rgba(255,255,255,0.06) !important;
+    background: #ede8e3 !important;
     border-radius: 10px !important;
 }
 
 /* ── Metadata card ── */
 .meta-card {
-    background: rgba(255,75,31,0.06);
-    border: 1px solid rgba(255,75,31,0.2);
+    background: linear-gradient(135deg, #fff9f6, #fff4ef);
+    border: 1px solid rgba(255,107,53,0.18);
     border-radius: 14px;
     padding: 20px 24px;
     margin: 16px 0;
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    box-shadow: 0 2px 12px rgba(255,107,53,0.08);
 }
 .meta-cover {
     width: 80px;
@@ -187,25 +198,25 @@ footer {visibility: hidden;}
     height: 110px;
     object-fit: cover;
     border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
 }
 .meta-info h3 {
     margin: 0 0 4px;
     font-size: 1.1rem;
     font-weight: 700;
-    color: #f0f0f0;
+    color: #1a1a1a;
 }
 .meta-info p {
     margin: 3px 0;
     font-size: 0.85rem;
-    color: #999;
+    color: #777;
 }
 .meta-badge {
     display: inline-block;
-    background: rgba(255,75,31,0.2);
-    color: #ff7a52;
+    background: rgba(255,107,53,0.12);
+    color: #d63c10;
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
     padding: 3px 10px;
@@ -214,61 +225,51 @@ footer {visibility: hidden;}
     margin-right: 4px;
 }
 .meta-badge.green {
-    background: rgba(0,184,148,0.2);
-    color: #00cec9;
+    background: rgba(0,166,126,0.12);
+    color: #007a5e;
 }
 
 /* ── Divider ── */
 .divider {
     height: 1px;
-    background: rgba(255,255,255,0.07);
-    margin: 24px 0;
+    background: #ede8e3;
+    margin: 22px 0;
 }
 
 /* ── Step label ── */
 .step-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #ff7a52;
-    letter-spacing: 1.5px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #d63c10;
+    letter-spacing: 1.8px;
     text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-/* ── Format pills ── */
-.format-pill {
-    display: inline-block;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #aaa;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-right: 6px;
-}
-.format-pill.active {
-    background: rgba(255,75,31,0.2);
-    border-color: rgba(255,75,31,0.5);
-    color: #ff7a52;
+    margin-bottom: 10px;
 }
 
 /* ── Success box ── */
 .success-box {
-    background: rgba(0,184,148,0.08);
-    border: 1px solid rgba(0,184,148,0.3);
+    background: linear-gradient(135deg, #f0fdf8, #e6faf4);
+    border: 1px solid rgba(0,166,126,0.25);
     border-radius: 14px;
-    padding: 20px 24px;
+    padding: 22px 24px;
     text-align: center;
     margin: 16px 0;
+    box-shadow: 0 2px 12px rgba(0,166,126,0.10);
 }
 .success-box .icon { font-size: 2.5rem; }
-.success-box h3 { color: #00b894; margin: 8px 0 4px; font-size: 1.2rem; }
+.success-box h3 { color: #007a5e; margin: 8px 0 4px; font-size: 1.2rem; font-weight: 700; }
 .success-box p { color: #888; font-size: 0.9rem; margin: 0; }
 
 /* ── Alert boxes ── */
 div[data-testid="stAlert"] {
     border-radius: 12px !important;
+}
+
+/* ── Footer ── */
+.footer-text {
+    color: #bbb;
+    font-size: 0.78rem;
+    text-align: center;
 }
 </style>
 """, unsafe_allow_html=True)
